@@ -72,6 +72,7 @@ public class PokemonManager {
             OutputUtil.lineSplitter();
             System.out.println("0. Back");
             System.out.println("1. List trainer pokemons");
+            System.out.println("2. List trainers by number of pokemon");
 
             final int choice = InputUtils.readInt();
 
@@ -80,6 +81,7 @@ public class PokemonManager {
                     return;
                 }
                 case 1 -> trainerController.listTrainerPokemons();
+                case 2 -> trainerController.listTrainersByNumOfPokemons();
                 default -> {
                     System.out.println("Invalid input");
                     return;

@@ -38,4 +38,13 @@ public class TrainerController {
             trainers.get(choice - 1).getPokemons().forEach(System.out::println);
         }
     }
+
+    public void listTrainersByNumOfPokemons() {
+        service.getAllTrainers()
+                .stream()
+                .sorted((a, b) -> b.getPokemons().size() - a.getPokemons().size())
+                .forEach( trainer ->
+                        System.out.println(trainer.getName() + " has " + trainer.getPokemons().size() + " pokemons captured")
+                );
+    }
 }
