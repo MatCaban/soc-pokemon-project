@@ -1,7 +1,7 @@
 package com.github.matcaban.pokemonmanager;
 
-import com.github.matcaban.pokemonmanager.db.DBPokemonService;
-import com.github.matcaban.pokemonmanager.service.PokemonManager;
+import com.github.matcaban.pokemonmanager.Controller.PokemonManager;
+import com.github.matcaban.pokemonmanager.service.DBPokemonService;
 
 import java.sql.SQLException;
 
@@ -10,5 +10,9 @@ public class Main {
 
         PokemonManager pokemonManager = new PokemonManager();
         pokemonManager.printOptions();
+
+//        DBPokemonService service = new DBPokemonService();
+//
+//        System.out.println(service.getIdOfName("mrmime"));
     }
 }

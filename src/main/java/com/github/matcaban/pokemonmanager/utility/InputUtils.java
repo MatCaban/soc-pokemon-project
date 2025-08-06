@@ -22,4 +22,8 @@ public class InputUtils {
             }
         }
     }
+
+    public static String readStringToLowerCase() {
+        return sc.nextLine().toLowerCase();
+    }
 }
