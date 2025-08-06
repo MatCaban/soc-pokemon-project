@@ -41,7 +41,7 @@ public class Pokemon {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
-                ", unique_trait='" + unique_trait + '\'' +
+                ", identification mark='" + unique_trait + '\'' +
                 ", trainerId=" + trainerId +
                 '}';
     }
