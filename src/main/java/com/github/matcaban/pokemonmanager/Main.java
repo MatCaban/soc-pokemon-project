@@ -1,7 +1,7 @@
 package com.github.matcaban.pokemonmanager;
 
 import com.github.matcaban.pokemonmanager.Controller.PokemonManager;
-import com.github.matcaban.pokemonmanager.service.DBPokemonService;
+import com.github.matcaban.pokemonmanager.service.DBTrainerService;
 
 import java.sql.SQLException;
 
@@ -14,5 +14,9 @@ public class Main {
 //        DBPokemonService service = new DBPokemonService();
 //
 //        System.out.println(service.getIdOfName("mrmime"));
+
+//        DBTrainerService service = new DBTrainerService();
+//
+//        service.getAllTrainers().stream().forEach(System.out::println);
     }
 }
