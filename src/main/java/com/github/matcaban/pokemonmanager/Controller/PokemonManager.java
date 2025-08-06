@@ -42,7 +42,8 @@ public class PokemonManager {
             System.out.println("0. Back");
             System.out.println("1. Get All Free Pokemons");
             System.out.println("2. Create new pokemon");
-            System.out.println("3. Delete (kill) pokemon");
+            System.out.println("3. Edit pokemon");
+            System.out.println("4. Kill pokemon");
 
             int choice = InputUtils.readInt();
 
@@ -52,7 +53,8 @@ public class PokemonManager {
                 }
                 case 1 -> pokemonController.printFreePokemons();
                 case 2 -> pokemonController.createNewPokemon();
-                case 3 -> System.out.println("Tu bude kill");
+                case 3 -> pokemonController.updatePokemon();
+                case 4 -> pokemonController.deletePokemon();
                 default -> {
                     System.out.println("Invalid input");
                     continue;

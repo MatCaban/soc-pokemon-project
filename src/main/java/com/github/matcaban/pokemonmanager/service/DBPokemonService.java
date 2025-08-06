@@ -11,13 +11,17 @@ import java.util.List;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class DBPokemonService {
-    private static final String READ_ALL_POKEMONS = "SELECT nt.id, nt.name, nt.type, p.unique_trait, p.trainer_id " +
+    private static final String READ_ALL_POKEMONS = "SELECT p.id, nt.name, nt.type, p.unique_trait, p.trainer_id " +
             "FROM pokemon p " +
             "LEFT JOIN name_type nt ON nt.id = p.name_id";
     private static final String GET_ID_OF_NAME = "SELECT id FROM name_type WHERE name = ?";
 
     private static final String CREATE_POKEMON = "INSERT INTO pokemon(name_id,unique_trait)" +
             "VALUES (?,?)";
+
+    private static final String DELETE_POKEMON = "DELETE FROM pokemon WHERE id = ?";
+
+    private static final String UPDATE_UNIQUE_TRAIT = "UPDATE pokemon SET unique_trait = ? WHERE id = ?";
 
 
     private static Logger logger = getLogger(DBPokemonService.class);
@@ -63,6 +67,37 @@ public class DBPokemonService {
             return 0;
         } catch (SQLException e) {
             logger.error("Error while creating new pokemon");
+            return 0;
+        }
+    }
+
+    public int delete(int id) {
+        try (
+                Connection connection = HikariCPDataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(DELETE_POKEMON);
+                ) {
+            statement.setInt(1, id);
+            return statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Error while deleting pokemon");
+            return 0;
+        }
+    }
+
+    public int updateUniqueTrait(String newValue, int id) {
+        try (
+                Connection connection = HikariCPDataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(UPDATE_UNIQUE_TRAIT);
+                ) {
+            statement.setString(1, newValue);
+            statement.setInt(2, id);
+            return statement.executeUpdate();
+        } catch (SQLIntegrityConstraintViolationException e) {
+            System.out.println("Pokemon with this trait already exist");
+            return 0;
+        }
+        catch (SQLException e) {
+            logger.error("Error while updating unique value");
             return 0;
         }
     }
