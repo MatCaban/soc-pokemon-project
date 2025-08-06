@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class Main {
     public static void main(String[] args) throws SQLException {
 
-        PokemonManager pm = new PokemonManager();
-        pm.printOptions();
+        PokemonManager pokemonManager = new PokemonManager();
+        pokemonManager.printOptions();
     }
 }

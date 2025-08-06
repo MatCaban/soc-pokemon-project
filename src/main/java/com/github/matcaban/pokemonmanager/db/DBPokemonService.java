@@ -1,5 +1,6 @@
 package com.github.matcaban.pokemonmanager.db;
 
+import com.github.matcaban.pokemonmanager.domain.Pokemon;
 import org.slf4j.Logger;
 
 import java.sql.Connection;

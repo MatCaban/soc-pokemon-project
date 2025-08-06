@@ -4,10 +4,10 @@ import com.github.matcaban.pokemonmanager.utility.InputUtils;
 import com.github.matcaban.pokemonmanager.utility.OutputUtil;
 
 public class PokemonManager {
-    private final PokemonController pcontroller;
+    private final PokemonController pokemonController;
 
     public PokemonManager () {
-        this.pcontroller = new PokemonController();
+        this.pokemonController = new PokemonController();
     }
 
     public void printOptions() {
@@ -51,7 +51,7 @@ public class PokemonManager {
                 case 0 -> {
                     return;
                 }
-                case 1 -> pcontroller.printFreePokemons();
+                case 1 -> pokemonController.printFreePokemons();
                 case 2 -> System.out.println("Tu bude create");
                 case 3 -> System.out.println("Tu bude edit");
                 case 4 -> System.out.println("Tu bude kill");

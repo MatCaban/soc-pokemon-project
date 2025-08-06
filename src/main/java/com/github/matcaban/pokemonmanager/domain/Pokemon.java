@@ -1,4 +1,6 @@
-package com.github.matcaban.pokemonmanager.db;
+package com.github.matcaban.pokemonmanager.domain;
+
+import java.util.Objects;
 
 public class Pokemon {
     private Integer id;
@@ -44,5 +46,17 @@ public class Pokemon {
                 ", identification mark='" + unique_trait + '\'' +
                 ", trainerId=" + trainerId +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Pokemon pokemon = (Pokemon) o;
+        return Objects.equals(id, pokemon.id) && Objects.equals(name, pokemon.name) && Objects.equals(type, pokemon.type) && Objects.equals(unique_trait, pokemon.unique_trait) && Objects.equals(trainerId, pokemon.trainerId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, type, unique_trait, trainerId);
     }
 }
