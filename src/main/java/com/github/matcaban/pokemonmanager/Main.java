@@ -4,6 +4,7 @@ import com.github.matcaban.pokemonmanager.Controller.PokemonManager;
 import com.github.matcaban.pokemonmanager.service.DBTrainerService;
 
 import java.sql.SQLException;
+import java.util.Random;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
@@ -18,5 +19,6 @@ public class Main {
 //        DBTrainerService service = new DBTrainerService();
 //
 //        service.getAllTrainers().stream().forEach(System.out::println);
+
     }
 }

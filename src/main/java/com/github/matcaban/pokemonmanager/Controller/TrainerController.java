@@ -23,34 +23,20 @@ public class TrainerController {
             return;
         }
 
-        while (true) {
-            OutputUtil.lineSplitter();
-            System.out.println("Which trainer do you want to see?");
-            System.out.println("0. Back");
+        final int choice = this.chooseTrainer(trainers, "Which trainer do you want to see?");
 
-            for (int i = 0; i < trainers.size(); i++) {
-                System.out.println((i + 1) + ". " + trainers.get(i).getName());
-            }
-            final int choice = InputUtils.readInt();
-
-            if (choice == 0) {
-                break;
-            }
-
-            if (choice < 1 || choice > trainers.size()) {
-                OutputUtil.invalidInput();
-                continue;
-            }
-
+        if (choice == 0) {
+            return;
+        } else {
             List<Pokemon> trainersPokemon = trainers.get(choice - 1).getPokemons();
             if (trainersPokemon.isEmpty()) {
                 System.out.println("This trainer has no pokemons");
-                break;
+                return;
             } else {
                 trainersPokemon.forEach(System.out::println);
             }
-
         }
+
     }
 
     public void listTrainersByNumOfPokemons() {
@@ -61,7 +47,7 @@ public class TrainerController {
         service.getAllTrainers()
                 .stream()
                 .sorted((a, b) -> b.getPokemons().size() - a.getPokemons().size())
-                .forEach( trainer ->
+                .forEach(trainer ->
                         System.out.println(trainer.getName() + " has " + trainer.getPokemons().size() + " pokemons captured")
                 );
     }
@@ -104,5 +90,65 @@ public class TrainerController {
             }
             return;
         }
+    }
+
+    public void catchPokemon() {
+        List<Trainer> trainers = service.getAllTrainers();
+        if (trainers.isEmpty()) {
+            OutputUtil.noTrainerRegistered();
+            return;
+        }
+
+        final int choice = this.chooseTrainer(trainers,"Which trainer is going to try to catch the pokemon");
+
+        if (choice == 0) {
+            return;
+        }
+
+        final int trainerId = trainers.get(choice - 1).getId();
+        new PokemonController().catchPokemon(trainerId);
+    }
+
+    public void unregisterTrainer() {
+        List<Trainer> trainers = service.getAllTrainers();
+        System.out.println("So you decided to cancel your registration?\nIf you do, all your pokoemons will be free");
+        final int choice =  this.chooseTrainer(trainers, "Which trainer wants to cancel the registration");
+
+        if (choice == 0) {
+            return;
+        }
+
+        final String name = trainers.get(choice - 1).getName();
+        final List<Pokemon> pokemons = trainers.get(choice - 1).getPokemons();
+        System.out.println("Registration cancelling process finished");
+        System.out.println(name + ", you are no longer registered trainer. All of your " +
+                pokemons.size() + " pokemons were set free");
+        new PokemonController().setPokemonFree(pokemons);
+    }
+
+    // helper method for printing all trainers
+    private int chooseTrainer(List<Trainer> trainers, String prompt) {
+        int choice = 0;
+        while (true) {
+            OutputUtil.lineSplitter();
+            System.out.println(prompt);
+            System.out.println("0. Back");
+
+            for (int i = 0; i < trainers.size(); i++) {
+                System.out.println((i + 1) + ". " + trainers.get(i).getName());
+            }
+            choice = InputUtils.readInt();
+
+            if (choice == 0) {
+                break;
+            }
+
+            if (choice < 1 || choice > trainers.size()) {
+                OutputUtil.invalidInput();
+                continue;
+            }
+            break;
+        }
+       return choice;
     }
 }

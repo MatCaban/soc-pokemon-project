@@ -8,6 +8,7 @@ import com.github.matcaban.pokemonmanager.utility.OutputUtil;
 import javax.crypto.spec.PSource;
 import javax.sound.midi.Soundbank;
 import java.util.List;
+import java.util.Random;
 
 public class PokemonController {
     private final DBPokemonService service;
@@ -133,6 +134,7 @@ public class PokemonController {
                 break;
             } else if (choice == 1) {
                 choosePokemonToDelete();
+                return;
             } else {
                 OutputUtil.invalidInput();
                 continue;
@@ -140,17 +142,60 @@ public class PokemonController {
         }
     }
 
-    private void choosePokemonToDelete() {
-        List<Pokemon> pokemons = service.getAllPokemon()
-                .stream()
-                .filter(pokemon -> pokemon.getTrainerId() == 0)
-                .toList();
+    public void catchPokemon(int trainerId) {
+        List<Pokemon> pokemons = this.getFreePokemons();
+
         if (pokemons.isEmpty()) {
             OutputUtil.noFreePokemons();
-            System.out.println("It looks like everyone is dead.");
+            System.out.println("It looks like there are no pokemon around here");
             return;
         }
 
+        final int choice = this.chooseFreePokemon(pokemons);
+
+        Random random = new Random();
+        // 70% probability to catch pokemon
+        if (random.nextInt(10) < 7) {
+            if (service.updateTrainerId(pokemons.get(choice - 1).getId(),trainerId) > 0) {
+                System.out.println("You caught a pokemon");
+            }
+        } else {
+            System.out.println("Bad luck. Your pokemon got away");
+        }
+    }
+
+    public void setPokemonFree(List<Pokemon> pokemons) {
+        pokemons.forEach(pokemon -> service.updateTrainerId(pokemon.getId(), 0));
+    }
+
+    private List<Pokemon> getFreePokemons() {
+        return service.getAllPokemon()
+                .stream()
+                .filter(pokemon -> pokemon.getTrainerId() == 0)
+                .toList();
+    }
+
+    private void choosePokemonToDelete() {
+        List<Pokemon> pokemons = this.getFreePokemons();
+        if (pokemons.isEmpty()) {
+            OutputUtil.noFreePokemons();
+            System.out.println("It looks like there are no pokemon around here");
+            return;
+        }
+
+        final int choice = this.chooseFreePokemon(pokemons);
+
+        if (choice == 0) {
+            return;
+        }
+
+        if (service.delete(pokemons.get(choice - 1).getId()) > 0) {
+            System.out.println("A moment of silence, please");
+        }
+    }
+
+    private int chooseFreePokemon(List<Pokemon> pokemons){
+        int choice;
         while (true) {
             OutputUtil.lineSplitter();
             System.out.println("These are all freely moving pokemons");
@@ -160,7 +205,7 @@ public class PokemonController {
             }
 
             System.out.println("Make up your mind: ");
-            final int choice = InputUtils.readInt();
+            choice = InputUtils.readInt();
 
             if (choice == 0) {
                 break;
@@ -168,13 +213,9 @@ public class PokemonController {
                 OutputUtil.invalidInput();
                 continue;
             }
-
-            if (service.delete(pokemons.get(choice - 1).getId()) > 0) {
-                System.out.println("A moment of silence, please");
-            }
-            return;
+            break;
         }
-
+        return choice;
     }
 
 }

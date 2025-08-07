@@ -74,6 +74,8 @@ public class PokemonManager {
             System.out.println("1. List trainer pokemons");
             System.out.println("2. List trainers by number of pokemon");
             System.out.println("3. Register new trainer");
+            System.out.println("4. Catch pokemon");
+            System.out.println("5. Unregister trainer");
 
             final int choice = InputUtils.readInt();
 
@@ -84,6 +86,8 @@ public class PokemonManager {
                 case 1 -> trainerController.listTrainerPokemons();
                 case 2 -> trainerController.listTrainersByNumOfPokemons();
                 case 3 -> trainerController.registerNewTrainer();
+                case 4 -> trainerController.catchPokemon();
+                case 5 -> trainerController.unregisterTrainer();
                 default -> {
                     OutputUtil.invalidInput();
                     return;

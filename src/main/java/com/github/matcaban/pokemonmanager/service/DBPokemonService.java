@@ -23,6 +23,8 @@ public class DBPokemonService {
 
     private static final String UPDATE_UNIQUE_TRAIT = "UPDATE pokemon SET unique_trait = ? WHERE id = ?";
 
+    private static final String UPDATE_TRAINER_ID = "UPDATE pokemon SET trainer_id = ? WHERE id = ?";
+
 
     private static Logger logger = getLogger(DBPokemonService.class);
 
@@ -98,6 +100,20 @@ public class DBPokemonService {
         }
         catch (SQLException e) {
             logger.error("Error while updating unique value");
+            return 0;
+        }
+    }
+
+    public int updateTrainerId(int id, int trainerId) {
+        try (
+                Connection connection = HikariCPDataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(UPDATE_TRAINER_ID);
+                ) {
+            statement.setInt(1, trainerId);
+            statement.setInt(2, id);
+            return statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Error while updating trainer_id");
             return 0;
         }
     }
