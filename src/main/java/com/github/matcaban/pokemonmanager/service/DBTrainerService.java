@@ -24,9 +24,9 @@ public class DBTrainerService {
     private static Logger logger = getLogger(DBTrainerService.class);
 
 
-    public List<Trainer> getAllTrainers() {
+    public List<Trainer> getAllTrainersWithPokemons() {
         List<Pokemon> pokemons = new DBPokemonService().getAllPokemon();
-        List<Trainer> trainers = this.setTrainers();
+        List<Trainer> trainers = this.getAllTrainers();
 
         for (Trainer trainer: trainers) {
             for (Pokemon pokemon: pokemons) {
@@ -36,9 +36,11 @@ public class DBTrainerService {
             }
         }
         return trainers;
+
+
     }
 
-    private List<Trainer> setTrainers() {
+    private List<Trainer> getAllTrainers() {
         try (
                 Connection connection = HikariCPDataSource.getConnection();
                 PreparedStatement statement = connection.prepareStatement(READ_ALL_TRAINERS);

@@ -21,18 +21,6 @@ public class Pokemon {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getUnique_trait() {
-        return unique_trait;
-    }
-
     public Integer getTrainerId() {
         return trainerId;
     }

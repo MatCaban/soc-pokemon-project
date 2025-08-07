@@ -24,7 +24,7 @@ public class PokemonController {
         if (frePokemon.isEmpty()) {
             OutputUtil.noFreePokemons();
         } else {
-           frePokemon.forEach(System.out::println);
+            frePokemon.forEach(System.out::println);
         }
 
     }
@@ -32,51 +32,34 @@ public class PokemonController {
     public void createNewPokemon() {
         while (true) {
             OutputUtil.lineSplitter();
-            System.out.println("Are you sure you saw Pokemon?");
-            System.out.println("0. Back");
-            System.out.println("1. Yes");
-            int choice = InputUtils.readInt();
+            System.out.println("So you saw a new Pokemon\nGreat, enter its name:");
+            String name = InputUtils.readStringToTitleCase();
 
-            switch (choice) {
-                case 0 -> {
-                    return;
-                }
-                case 1 -> {
-                    OutputUtil.lineSplitter();
-                    System.out.println("So you saw a new Pokemon\nGreat, enter its name:");
-                    String name = InputUtils.readStringToTitleCase();
+            int id = service.getIdOfName(name);
 
-                    int id = service.getIdOfName(name);
+            if (id == -1) {
+                System.out.println("I'm sorry, I don't have that name in my pokedex database of existing pokemons" +
+                        "\nYou must have seen some other animal");
+                continue;
+            }
 
-                    if (id == -1) {
-                        System.out.println("I'm sorry, I don't have that name in my pokedex database of existing pokemons" +
-                                "\nYou must have seen some other animal");
-                        continue;
-                    }
-
-                    System.out.println("Oh great a " + name + "\nTake a quick look at some identifying mark on it so we " +
-                            "can tell it apart from the others of the same kind");
-                    String unique_trait = "";
-                    while (true) {
-                        unique_trait = InputUtils.readStringToLowerCase();
-                        if (unique_trait.isBlank()) {
-                            System.out.println("Identifying mark can not be empty. Look again");
-                        } else {
-                            break;
-                        }
-                    }
-
-
-                    if (service.create(id, unique_trait) > 0) {
-                        System.out.println("Pokemon successfully added to my pokedex. You can now go and catch it");
-                    }
-                    return;
-                }
-                default -> {
-                    OutputUtil.invalidInput();
-                    continue;
+            System.out.println("Oh great a " + name + "\nTake a quick look at some identifying mark on it so we " +
+                    "can tell it apart from the others of the same kind");
+            String unique_trait = "";
+            while (true) {
+                unique_trait = InputUtils.readStringToLowerCase();
+                if (unique_trait.isBlank()) {
+                    System.out.println("Identifying mark can not be empty. Look again");
+                } else {
+                    break;
                 }
             }
+
+
+            if (service.create(id, unique_trait) > 0) {
+                System.out.println("Pokemon successfully added to my pokedex. You can now go and catch it");
+            }
+            return;
         }
     }
 
@@ -143,25 +126,47 @@ public class PokemonController {
     }
 
     public void catchPokemon(int trainerId) {
-        List<Pokemon> pokemons = this.getFreePokemons();
+        while (true) {
+            List<Pokemon> pokemons = this.getFreePokemons();
 
-        if (pokemons.isEmpty()) {
-            OutputUtil.noFreePokemons();
-            System.out.println("It looks like there are no pokemon around here");
-            return;
-        }
-
-        final int choice = this.chooseFreePokemon(pokemons);
-
-        Random random = new Random();
-        // 70% probability to catch pokemon
-        if (random.nextInt(10) < 7) {
-            if (service.updateTrainerId(pokemons.get(choice - 1).getId(),trainerId) > 0) {
-                System.out.println("You caught a pokemon");
+            if (pokemons.isEmpty()) {
+                OutputUtil.noFreePokemons();
+                return;
             }
-        } else {
-            System.out.println("Bad luck. Your pokemon got away");
+
+
+            int choice = this.chooseFreePokemon(pokemons);
+
+            Random random = new Random();
+            // 70% probability to catch pokemon
+            if (random.nextInt(10) < 7) {
+                if (service.updateTrainerId(pokemons.get(choice - 1).getId(), trainerId) > 0) {
+                    System.out.println("You caught a pokemon");
+                }
+            } else {
+                System.out.println("Bad luck. Your pokemon got away");
+            }
+
+            OutputUtil.lineSplitter();
+            System.out.println("Do you want to try to catch another one?");
+            System.out.println("0. No");
+            System.out.println("1. Yes");
+
+            while (true) {
+                choice = InputUtils.readInt();
+                if (choice < 0 || choice > 1) {
+                    OutputUtil.invalidInput();
+                } else {
+                    break;
+                }
+            }
+
+
+            if (choice == 0) {
+                break;
+            }
         }
+
     }
 
     public void setPokemonFree(List<Pokemon> pokemons) {
@@ -179,7 +184,6 @@ public class PokemonController {
         List<Pokemon> pokemons = this.getFreePokemons();
         if (pokemons.isEmpty()) {
             OutputUtil.noFreePokemons();
-            System.out.println("It looks like there are no pokemon around here");
             return;
         }
 
@@ -194,7 +198,7 @@ public class PokemonController {
         }
     }
 
-    private int chooseFreePokemon(List<Pokemon> pokemons){
+    private int chooseFreePokemon(List<Pokemon> pokemons) {
         int choice;
         while (true) {
             OutputUtil.lineSplitter();
@@ -204,7 +208,7 @@ public class PokemonController {
                 System.out.println((i + 1) + ". " + pokemons.get(i));
             }
 
-            System.out.println("Make up your mind: ");
+            System.out.println("What's your choice?");
             choice = InputUtils.readInt();
 
             if (choice == 0) {

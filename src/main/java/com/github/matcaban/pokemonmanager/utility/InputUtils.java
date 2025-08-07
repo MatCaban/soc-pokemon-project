@@ -15,8 +15,7 @@ public class InputUtils {
                 sc.nextLine();
                 return input;
             } catch (Exception e) {
-                System.out.println("Invalid input!");
-                System.out.println("Try again");
+                OutputUtil.invalidInput();
                 sc.nextLine();
             }
         }
@@ -27,10 +26,10 @@ public class InputUtils {
     }
 
     public static String readStringToTitleCase() {
-        String s = sc.nextLine().toLowerCase();
-        String[] arrS = s.split(" ");
+        String userInput = sc.nextLine().toLowerCase();
+        String[] userInputArray = userInput.split(" ");
 
-        return Arrays.stream(arrS)
+        return Arrays.stream(userInputArray)
                 .map(string -> {
                     return string.substring(0, 1).toUpperCase() + string.substring(1);
                 })

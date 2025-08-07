@@ -16,7 +16,7 @@ public class TrainerController {
     }
 
     public void listTrainerPokemons() {
-        List<Trainer> trainers = service.getAllTrainers();
+        List<Trainer> trainers = service.getAllTrainersWithPokemons();
 
         if (trainers.isEmpty()) {
             OutputUtil.noTrainerRegistered();
@@ -40,11 +40,11 @@ public class TrainerController {
     }
 
     public void listTrainersByNumOfPokemons() {
-        if (service.getAllTrainers().isEmpty()) {
+        if (service.getAllTrainersWithPokemons().isEmpty()) {
             OutputUtil.noTrainerRegistered();
             return;
         }
-        service.getAllTrainers()
+        service.getAllTrainersWithPokemons()
                 .stream()
                 .sorted((a, b) -> b.getPokemons().size() - a.getPokemons().size())
                 .forEach(trainer ->
@@ -66,7 +66,7 @@ public class TrainerController {
                 break;
             }
 
-            if (choice < 1 || choice > 1) {
+            if (choice != 1) {
                 OutputUtil.invalidInput();
                 continue;
             }
@@ -93,7 +93,7 @@ public class TrainerController {
     }
 
     public void catchPokemon() {
-        List<Trainer> trainers = service.getAllTrainers();
+        List<Trainer> trainers = service.getAllTrainersWithPokemons();
         if (trainers.isEmpty()) {
             OutputUtil.noTrainerRegistered();
             return;
@@ -110,7 +110,7 @@ public class TrainerController {
     }
 
     public void unregisterTrainer() {
-        List<Trainer> trainers = service.getAllTrainers();
+        List<Trainer> trainers = service.getAllTrainersWithPokemons();
         System.out.println("So you decided to cancel your registration?\nIf you do, all your pokoemons will be free");
         final int choice = this.chooseTrainer(trainers, "Which trainer wants to cancel the registration");
 
@@ -152,7 +152,7 @@ public class TrainerController {
             OutputUtil.invalidInput();
         }
 
-        List<Trainer> trainers = service.getAllTrainers();
+        List<Trainer> trainers = service.getAllTrainersWithPokemons();
 
         choice = this.chooseTrainer(trainers, "Ok than, select trainer whose name you want to edit");
 

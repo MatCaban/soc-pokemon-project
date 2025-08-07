@@ -2,6 +2,8 @@ package com.github.matcaban.pokemonmanager.utility;
 
 public class OutputUtil {
 
+    private OutputUtil() {}
+
     public static void lineSplitter() {
         System.out.println("-".repeat(18));
     }
@@ -11,7 +13,7 @@ public class OutputUtil {
     }
 
     public static void noTrainerRegistered() {
-        System.out.println("I don't currently have any coaches registered");
+        System.out.println("I don't currently have any trainers registered");
     }
 
     public static void noFreePokemons() {
