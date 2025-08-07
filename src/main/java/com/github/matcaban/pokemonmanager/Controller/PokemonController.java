@@ -17,12 +17,13 @@ public class PokemonController {
     }
 
     public void printFreePokemons() {
-        if (service.getAllPokemon().isEmpty()) {
-            System.out.println("There are currently no free-roaming pokemons here.");
+        List<Pokemon> frePokemon = service.getAllPokemon().stream()
+                .filter(pokemon -> pokemon.getTrainerId() == 0)
+                .toList();
+        if (frePokemon.isEmpty()) {
+            OutputUtil.noFreePokemons();
         } else {
-            service.getAllPokemon().stream()
-                    .filter(pokemon -> pokemon.getTrainerId() == 0)
-                    .forEach(System.out::println);
+           frePokemon.forEach(System.out::println);
         }
 
     }
@@ -54,16 +55,24 @@ public class PokemonController {
 
                     System.out.println("Oh great a " + name + "\nTake a quick look at some identifying mark on it so we " +
                             "can tell it apart from the others of the same kind");
+                    String unique_trait = "";
+                    while (true) {
+                        unique_trait = InputUtils.readStringToLowerCase();
+                        if (unique_trait.isBlank()) {
+                            System.out.println("Identifying mark can not be empty. Look again");
+                        } else {
+                            break;
+                        }
+                    }
 
-                    String unique_trait = InputUtils.readStringToLowerCase();
 
                     if (service.create(id, unique_trait) > 0) {
                         System.out.println("Pokemon successfully added to my pokedex. You can now go and catch it");
-                        return;
                     }
+                    return;
                 }
                 default -> {
-                    System.out.println("Invalid input, try again");
+                    OutputUtil.invalidInput();
                     continue;
                 }
             }
@@ -74,7 +83,7 @@ public class PokemonController {
         List<Pokemon> pokemons = service.getAllPokemon();
 
         if (pokemons.isEmpty()) {
-            System.out.println("Sorry, there are currently no free-roaming pokemon available");
+            OutputUtil.noFreePokemons();
             return;
         }
 
@@ -93,17 +102,17 @@ public class PokemonController {
             if (choice == 0) {
                 break;
             } else if (choice < 1 || choice > pokemons.size()) {
-                System.out.println("Invalid input try again");
+                OutputUtil.invalidInput();
                 continue;
             }
 
             System.out.println("Write a new one identification marks");
             String newMarks = InputUtils.readStringToLowerCase();
 
-            if (service.updateUniqueTrait(newMarks, pokemons.get(choice - 1).getId()) > 0 ) {
+            if (service.updateUniqueTrait(newMarks, pokemons.get(choice - 1).getId()) > 0) {
                 System.out.println("Thank you, I successfully updated my pokedex");
-                break;
             }
+            break;
         }
 
     }
@@ -125,7 +134,7 @@ public class PokemonController {
             } else if (choice == 1) {
                 choosePokemonToDelete();
             } else {
-                System.out.println("Invalid input");
+                OutputUtil.invalidInput();
                 continue;
             }
         }
@@ -137,14 +146,14 @@ public class PokemonController {
                 .filter(pokemon -> pokemon.getTrainerId() == 0)
                 .toList();
         if (pokemons.isEmpty()) {
-            System.out.println("Sorry, there are currently no free-roaming pokemon\n" +
-                    "It looks like everyone is dead.");
+            OutputUtil.noFreePokemons();
+            System.out.println("It looks like everyone is dead.");
             return;
         }
 
         while (true) {
             OutputUtil.lineSplitter();
-            System.out.println("These are all freely moving Pokemons");
+            System.out.println("These are all freely moving pokemons");
             System.out.println("0. Back");
             for (int i = 0; i < pokemons.size(); i++) {
                 System.out.println((i + 1) + ". " + pokemons.get(i));
@@ -156,14 +165,14 @@ public class PokemonController {
             if (choice == 0) {
                 break;
             } else if (choice < 1 || choice > pokemons.size()) {
-                System.out.println("Invalid Input");
+                OutputUtil.invalidInput();
                 continue;
             }
 
             if (service.delete(pokemons.get(choice - 1).getId()) > 0) {
                 System.out.println("A moment of silence, please");
-                return;
             }
+            return;
         }
 
     }

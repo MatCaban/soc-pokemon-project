@@ -32,7 +32,7 @@ public class PokemonManager {
                 case 1 -> pokemonManagerOption();
                 case 2 -> trainerManagerOption();
                 default -> {
-                    System.out.println("Invalid input");
+                    OutputUtil.invalidInput();
                     continue;
                 }
             }
@@ -60,7 +60,7 @@ public class PokemonManager {
                 case 3 -> pokemonController.updatePokemon();
                 case 4 -> pokemonController.deletePokemon();
                 default -> {
-                    System.out.println("Invalid input");
+                    OutputUtil.invalidInput();
                     continue;
                 }
             }
@@ -73,6 +73,7 @@ public class PokemonManager {
             System.out.println("0. Back");
             System.out.println("1. List trainer pokemons");
             System.out.println("2. List trainers by number of pokemon");
+            System.out.println("3. Register new trainer");
 
             final int choice = InputUtils.readInt();
 
@@ -82,8 +83,9 @@ public class PokemonManager {
                 }
                 case 1 -> trainerController.listTrainerPokemons();
                 case 2 -> trainerController.listTrainersByNumOfPokemons();
+                case 3 -> trainerController.registerNewTrainer();
                 default -> {
-                    System.out.println("Invalid input");
+                    OutputUtil.invalidInput();
                     return;
                 }
             }

@@ -5,10 +5,7 @@ import com.github.matcaban.pokemonmanager.domain.Pokemon;
 import com.github.matcaban.pokemonmanager.domain.Trainer;
 import org.slf4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +14,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class DBTrainerService {
     private static String READ_ALL_TRAINERS = "SELECT * FROM trainer";
+
+    private static String CREATE_TRAINER = "INSERT INTO trainer (name) VALUES (?)";
 
     private static Logger logger = getLogger(DBTrainerService.class);
 
@@ -54,6 +53,22 @@ public class DBTrainerService {
         } catch (SQLException e) {
             logger.error("Error while reading trainers");
             return null;
+        }
+    }
+
+    public int createTrainer(String name) {
+        try (
+                Connection connection = HikariCPDataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(CREATE_TRAINER);
+                ){
+            statement.setString(1, name);
+            return statement.executeUpdate();
+        } catch (SQLIntegrityConstraintViolationException e) {
+            System.out.println("I am sorry trainer with this name already exists");
+            return 0;
+        }catch (SQLException e) {
+            logger.error("Error while creating trainer");
+            return 0;
         }
     }
 }
