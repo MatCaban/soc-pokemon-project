@@ -89,6 +89,7 @@ public class PokemonManager {
                 case 3 -> trainerController.registerNewTrainer();
                 case 4 -> trainerController.catchPokemon();
                 case 5 -> trainerController.unregisterTrainer();
+                case 6 -> trainerController.editTrainer();
                 default -> {
                     OutputUtil.invalidInput();
                     return;

@@ -1,13 +1,12 @@
 package com.github.matcaban.pokemonmanager.utility;
 
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class InputUtils {
     private final static Scanner sc = new Scanner(System.in);
 
-    public static String readString() {
-        return sc.nextLine();
-    }
 
     public static int readInt() {
         while (true) {
@@ -25,5 +24,17 @@ public class InputUtils {
 
     public static String readStringToLowerCase() {
         return sc.nextLine().toLowerCase();
+    }
+
+    public static String readStringToTitleCase() {
+        String s = sc.nextLine().toLowerCase();
+        String[] arrS = s.split(" ");
+
+        return Arrays.stream(arrS)
+                .map(string -> {
+                    return string.substring(0, 1).toUpperCase() + string.substring(1);
+                })
+                .collect(Collectors.joining(" "));
+
     }
 }

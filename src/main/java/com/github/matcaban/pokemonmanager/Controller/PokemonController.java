@@ -44,7 +44,7 @@ public class PokemonController {
                 case 1 -> {
                     OutputUtil.lineSplitter();
                     System.out.println("So you saw a new Pokemon\nGreat, enter its name:");
-                    String name = InputUtils.readStringToLowerCase();
+                    String name = InputUtils.readStringToTitleCase();
 
                     int id = service.getIdOfName(name);
 

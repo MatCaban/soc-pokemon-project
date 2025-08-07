@@ -88,4 +88,22 @@ public class DBTrainerService {
             return 0;
         }
     }
+
+    public int updateTrainer(String name, int id) {
+        try (
+                Connection connection = HikariCPDataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(UPDATE_TRAINER_NAME);
+                ) {
+            statement.setString(1, name);
+            statement.setInt(2, id);
+            return statement.executeUpdate();
+        } catch (SQLIntegrityConstraintViolationException e) {
+            System.out.println("Trainer with this name already exists");
+            return 0;
+        }
+        catch (SQLException e) {
+            logger.error("Error while renamig trainer");
+            return 0;
+        }
+    }
 }

@@ -77,7 +77,7 @@ public class TrainerController {
             String name = "";
 
             while (true) {
-                name = InputUtils.readString();
+                name = InputUtils.readStringToTitleCase();
                 if (name.isBlank()) {
                     System.out.println("You must enter your name");
                 } else {
@@ -160,6 +160,12 @@ public class TrainerController {
             return;
         }
 
+        System.out.println("Enter your new name and prepare for a lengthy paperwork process");
+        String name = InputUtils.readStringToTitleCase();
+
+        if (service.updateTrainer(name, trainers.get(choice - 1).getId()) > 0){
+            System.out.println("Congratulations, you have successfully changed your name");
+        }
     }
 
     // helper method for printing all trainers
