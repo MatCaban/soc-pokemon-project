@@ -3,8 +3,6 @@ package com.github.matcaban.pokemonmanager.Controller;
 import com.github.matcaban.pokemonmanager.utility.InputUtils;
 import com.github.matcaban.pokemonmanager.utility.OutputUtil;
 
-import java.sql.SQLOutput;
-
 public class PokemonManager {
     private final PokemonController pokemonController;
     private final TrainerController trainerController;
@@ -15,9 +13,9 @@ public class PokemonManager {
     }
 
     public void printOptions() {
-        System.out.println("Hello and welcome to Pokemon Manager System I.generation");
 
         while (true) {
+            System.out.println("Hello and welcome to Pokemon Manager System I.generation");
             System.out.println("0. Exit");
             System.out.println("1. Pokemon Manager");
             System.out.println("2. Trainer Manager");
@@ -55,7 +53,7 @@ public class PokemonManager {
                 case 0 -> {
                     return;
                 }
-                case 1 -> pokemonController.printFreePokemons();
+                case 1 -> pokemonController.printPokemonsWithoutTrainer();
                 case 2 -> pokemonController.createNewPokemon();
                 case 3 -> pokemonController.updatePokemon();
                 case 4 -> pokemonController.deletePokemon();
@@ -84,7 +82,7 @@ public class PokemonManager {
                 case 0 -> {
                     return;
                 }
-                case 1 -> trainerController.listTrainerPokemons();
+                case 1 -> trainerController.getPokemonsFromTrainer();
                 case 2 -> trainerController.listTrainersByNumOfPokemons();
                 case 3 -> trainerController.registerNewTrainer();
                 case 4 -> trainerController.catchPokemon();
@@ -92,7 +90,7 @@ public class PokemonManager {
                 case 6 -> trainerController.editTrainer();
                 default -> {
                     OutputUtil.invalidInput();
-                    return;
+                    continue;
                 }
             }
         }

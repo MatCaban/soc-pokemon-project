@@ -14,6 +14,7 @@ public class DBPokemonService {
     private static final String READ_ALL_POKEMONS = "SELECT p.id, nt.name, nt.type, p.unique_trait, p.trainer_id " +
             "FROM pokemon p " +
             "LEFT JOIN name_type nt ON nt.id = p.name_id";
+
     private static final String GET_ID_OF_NAME = "SELECT id FROM name_type WHERE name = ?";
 
     private static final String CREATE_POKEMON = "INSERT INTO pokemon(name_id,unique_trait)" +
@@ -55,7 +56,7 @@ public class DBPokemonService {
     }
 
 
-    public int create(int id, String unique_trait) {
+    public int createPokemon(int id, String unique_trait) {
         try (
                 Connection connection = HikariCPDataSource.getConnection();
                 PreparedStatement statement = connection.prepareStatement(CREATE_POKEMON);
@@ -73,7 +74,7 @@ public class DBPokemonService {
         }
     }
 
-    public int delete(int id) {
+    public int deletePokemon(int id) {
         try (
                 Connection connection = HikariCPDataSource.getConnection();
                 PreparedStatement statement = connection.prepareStatement(DELETE_POKEMON);
@@ -125,7 +126,7 @@ public class DBPokemonService {
         }
     }
 
-    // get the ID of existing pokemon, if pokemon with that name does not exists return -1
+    // check if the name is valid pokemon name, if not returns -1
     public int getIdOfName(String name) {
         try (
                 Connection connection = HikariCPDataSource.getConnection();

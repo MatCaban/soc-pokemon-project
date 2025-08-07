@@ -35,7 +35,7 @@ public class Trainer {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Trainer trainer = (Trainer) o;
-        return Objects.equals(id, trainer.id) && Objects.equals(name, trainer.name) && Objects.equals(pokemons, trainer.pokemons);
+        return Objects.equals(id, trainer.id) && Objects.equals(name, trainer.name);
     }
 
     @Override

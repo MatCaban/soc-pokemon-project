@@ -15,7 +15,7 @@ public class TrainerController {
         this.service = new DBTrainerService();
     }
 
-    public void listTrainerPokemons() {
+    public void getPokemonsFromTrainer() {
         List<Trainer> trainers = service.getAllTrainersWithPokemons();
 
         if (trainers.isEmpty()) {
@@ -23,7 +23,7 @@ public class TrainerController {
             return;
         }
 
-        final int choice = this.chooseTrainer(trainers, "Which trainer do you want to see?");
+        final int choice = this.chooseTrainer(trainers, "Whose pokemons you want to see?");
 
         if (choice == 0) {
             return;
@@ -168,7 +168,11 @@ public class TrainerController {
         }
     }
 
-    // helper method for printing all trainers
+
+
+     // Displays a list of trainers along with a prompt and allows the user to make a selection.
+     // The method repeatedly asks for input until a valid trainer is selected or the user chooses to go back.
+
     private int chooseTrainer(List<Trainer> trainers, String prompt) {
         int choice = 0;
         while (true) {

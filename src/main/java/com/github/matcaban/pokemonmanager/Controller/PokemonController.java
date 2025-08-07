@@ -5,8 +5,6 @@ import com.github.matcaban.pokemonmanager.service.DBPokemonService;
 import com.github.matcaban.pokemonmanager.utility.InputUtils;
 import com.github.matcaban.pokemonmanager.utility.OutputUtil;
 
-import javax.crypto.spec.PSource;
-import javax.sound.midi.Soundbank;
 import java.util.List;
 import java.util.Random;
 
@@ -17,14 +15,14 @@ public class PokemonController {
         this.service = new DBPokemonService();
     }
 
-    public void printFreePokemons() {
-        List<Pokemon> frePokemon = service.getAllPokemon().stream()
+    public void printPokemonsWithoutTrainer() {
+        List<Pokemon> freePokemon = service.getAllPokemon().stream()
                 .filter(pokemon -> pokemon.getTrainerId() == 0)
                 .toList();
-        if (frePokemon.isEmpty()) {
+        if (freePokemon.isEmpty()) {
             OutputUtil.noFreePokemons();
         } else {
-            frePokemon.forEach(System.out::println);
+            freePokemon.forEach(System.out::println);
         }
 
     }
@@ -56,7 +54,7 @@ public class PokemonController {
             }
 
 
-            if (service.create(id, unique_trait) > 0) {
+            if (service.createPokemon(id, unique_trait) > 0) {
                 System.out.println("Pokemon successfully added to my pokedex. You can now go and catch it");
             }
             return;
@@ -74,7 +72,7 @@ public class PokemonController {
         while (true) {
             OutputUtil.lineSplitter();
             System.out.println("So do you think I wrote the identification marks of one of the " +
-                    "\nPokemon in the pokedex incorrectly? And which one?");
+                    "\npokemon in the pokedex incorrectly? And which one?");
 
             System.out.println("0. Back");
             for (int i = 0; i < pokemons.size(); i++) {
@@ -90,7 +88,7 @@ public class PokemonController {
                 continue;
             }
 
-            System.out.println("Write a new one identification marks");
+            System.out.println("Write a correct identification marks");
             String newMarks = InputUtils.readStringToLowerCase();
 
             if (service.updateUniqueTrait(newMarks, pokemons.get(choice - 1).getId()) > 0) {
@@ -112,28 +110,29 @@ public class PokemonController {
 
             int choice = InputUtils.readInt();
 
+            if (choice < 0 || choice > 1) {
+                OutputUtil.invalidInput();
+                continue;
+            }
+
             if (choice == 0) {
                 System.out.println("Thank God you changed your mind. Bye");
                 break;
-            } else if (choice == 1) {
+            } else {
                 choosePokemonToDelete();
                 return;
-            } else {
-                OutputUtil.invalidInput();
-                continue;
             }
         }
     }
 
     public void catchPokemon(int trainerId) {
         while (true) {
-            List<Pokemon> pokemons = this.getFreePokemons();
+            List<Pokemon> pokemons = this.getPokemonsWithoutTrainer();
 
             if (pokemons.isEmpty()) {
                 OutputUtil.noFreePokemons();
                 return;
             }
-
 
             int choice = this.chooseFreePokemon(pokemons);
 
@@ -173,7 +172,7 @@ public class PokemonController {
         pokemons.forEach(pokemon -> service.updateTrainerId(pokemon.getId(), 0));
     }
 
-    private List<Pokemon> getFreePokemons() {
+    private List<Pokemon> getPokemonsWithoutTrainer() {
         return service.getAllPokemon()
                 .stream()
                 .filter(pokemon -> pokemon.getTrainerId() == 0)
@@ -181,7 +180,7 @@ public class PokemonController {
     }
 
     private void choosePokemonToDelete() {
-        List<Pokemon> pokemons = this.getFreePokemons();
+        List<Pokemon> pokemons = this.getPokemonsWithoutTrainer();
         if (pokemons.isEmpty()) {
             OutputUtil.noFreePokemons();
             return;
@@ -193,7 +192,7 @@ public class PokemonController {
             return;
         }
 
-        if (service.delete(pokemons.get(choice - 1).getId()) > 0) {
+        if (service.deletePokemon(pokemons.get(choice - 1).getId()) > 0) {
             System.out.println("A moment of silence, please");
         }
     }
