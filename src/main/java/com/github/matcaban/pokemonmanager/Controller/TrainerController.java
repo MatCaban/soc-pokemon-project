@@ -99,7 +99,7 @@ public class TrainerController {
             return;
         }
 
-        final int choice = this.chooseTrainer(trainers,"Which trainer is going to try to catch the pokemon");
+        final int choice = this.chooseTrainer(trainers, "Which trainer is going to try to catch the pokemon");
 
         if (choice == 0) {
             return;
@@ -112,18 +112,54 @@ public class TrainerController {
     public void unregisterTrainer() {
         List<Trainer> trainers = service.getAllTrainers();
         System.out.println("So you decided to cancel your registration?\nIf you do, all your pokoemons will be free");
-        final int choice =  this.chooseTrainer(trainers, "Which trainer wants to cancel the registration");
+        final int choice = this.chooseTrainer(trainers, "Which trainer wants to cancel the registration");
 
         if (choice == 0) {
             return;
         }
 
         final String name = trainers.get(choice - 1).getName();
+        final int id = trainers.get(choice - 1).getId();
         final List<Pokemon> pokemons = trainers.get(choice - 1).getPokemons();
-        System.out.println("Registration cancelling process finished");
-        System.out.println(name + ", you are no longer registered trainer. All of your " +
-                pokemons.size() + " pokemons were set free");
-        new PokemonController().setPokemonFree(pokemons);
+
+        // delete trainer and set pokemon free only if trainer exists
+        if (id > 0) {
+            new PokemonController().setPokemonFree(pokemons);
+            if (service.deleteTrainer(id) > 0) {
+                System.out.println("Registration cancelling process finished");
+                System.out.println(name + ", you are no longer registered trainer. All of your " +
+                        pokemons.size() + " pokemons were set free");
+            }
+        }
+    }
+
+    public void editTrainer() {
+        OutputUtil.lineSplitter();
+        System.out.println("So, you've decided to change your name?" +
+                "\nDo you realize that means a huge amount of paperwork, official visits," +
+                "\ngetting things registered, and signing documents?" +
+                "\nAre you really sure you want to go through with this?");
+        System.out.println("0. Back");
+        System.out.println("1. Yes");
+
+        int choice = InputUtils.readInt();
+
+        if (choice == 0) {
+            return;
+        }
+
+        if (choice != 1) {
+            OutputUtil.invalidInput();
+        }
+
+        List<Trainer> trainers = service.getAllTrainers();
+
+        choice = this.chooseTrainer(trainers, "Ok than, select trainer whose name you want to edit");
+
+        if (choice == 0) {
+            return;
+        }
+
     }
 
     // helper method for printing all trainers
@@ -149,6 +185,6 @@ public class TrainerController {
             }
             break;
         }
-       return choice;
+        return choice;
     }
 }

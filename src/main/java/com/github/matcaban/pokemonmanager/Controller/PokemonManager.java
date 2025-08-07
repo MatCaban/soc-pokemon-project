@@ -71,11 +71,12 @@ public class PokemonManager {
         while (true) {
             OutputUtil.lineSplitter();
             System.out.println("0. Back");
-            System.out.println("1. List trainer pokemons");
-            System.out.println("2. List trainers by number of pokemon");
+            System.out.println("1. Choose the trainer whose pokemons you want to see");
+            System.out.println("2. List trainers by number of pokemons");
             System.out.println("3. Register new trainer");
             System.out.println("4. Catch pokemon");
             System.out.println("5. Unregister trainer");
+            System.out.println("6. Edit trainer");
 
             final int choice = InputUtils.readInt();
 

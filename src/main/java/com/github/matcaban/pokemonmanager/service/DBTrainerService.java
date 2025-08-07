@@ -17,6 +17,10 @@ public class DBTrainerService {
 
     private static String CREATE_TRAINER = "INSERT INTO trainer (name) VALUES (?)";
 
+    private static String DELETE_TRAINER = "DELETE FROM trainer WHERE id = ?";
+
+    private static String UPDATE_TRAINER_NAME = "UPDATE trainer SET name = ? WHERE id = ?";
+
     private static Logger logger = getLogger(DBTrainerService.class);
 
 
@@ -68,6 +72,19 @@ public class DBTrainerService {
             return 0;
         }catch (SQLException e) {
             logger.error("Error while creating trainer");
+            return 0;
+        }
+    }
+
+    public int deleteTrainer(int id) {
+        try (
+                Connection connection = HikariCPDataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(DELETE_TRAINER);
+                ) {
+            statement.setInt(1, id);
+            return statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Error while deleting trainer");
             return 0;
         }
     }

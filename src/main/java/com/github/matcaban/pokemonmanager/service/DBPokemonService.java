@@ -109,7 +109,14 @@ public class DBPokemonService {
                 Connection connection = HikariCPDataSource.getConnection();
                 PreparedStatement statement = connection.prepareStatement(UPDATE_TRAINER_ID);
                 ) {
-            statement.setInt(1, trainerId);
+
+            // if trainer id == 0 means that pokemon is set free, so trainer_id is set to NULL
+            if (trainerId == 0) {
+                statement.setNull(1, Types.INTEGER);
+            } else {
+                statement.setInt(1, trainerId);
+            }
+
             statement.setInt(2, id);
             return statement.executeUpdate();
         } catch (SQLException e) {
