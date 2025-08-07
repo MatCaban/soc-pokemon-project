@@ -17,9 +17,14 @@ public class PokemonController {
     }
 
     public void printFreePokemons() {
-        service.getAllPokemon().stream()
-                .filter(pokemon -> pokemon.getTrainerId() == 0)
-                .forEach(System.out::println);
+        if (service.getAllPokemon().isEmpty()) {
+            System.out.println("There are currently no free-roaming pokemons here.");
+        } else {
+            service.getAllPokemon().stream()
+                    .filter(pokemon -> pokemon.getTrainerId() == 0)
+                    .forEach(System.out::println);
+        }
+
     }
 
     public void createNewPokemon() {
@@ -42,11 +47,13 @@ public class PokemonController {
                     int id = service.getIdOfName(name);
 
                     if (id == -1) {
-                        System.out.println("I'm sorry, I don't have that name in my pokedex\nYou must have seen some other animal");
+                        System.out.println("I'm sorry, I don't have that name in my pokedex database of existing pokemons" +
+                                "\nYou must have seen some other animal");
                         continue;
                     }
 
-                    System.out.println("Oh great a " + name + "\nTake a quick look at some identifying mark on it so we can tell it apart from the others of the same kind");
+                    System.out.println("Oh great a " + name + "\nTake a quick look at some identifying mark on it so we " +
+                            "can tell it apart from the others of the same kind");
 
                     String unique_trait = InputUtils.readStringToLowerCase();
 
@@ -66,10 +73,15 @@ public class PokemonController {
     public void updatePokemon() {
         List<Pokemon> pokemons = service.getAllPokemon();
 
+        if (pokemons.isEmpty()) {
+            System.out.println("Sorry, there are currently no free-roaming pokemon available");
+            return;
+        }
+
         while (true) {
             OutputUtil.lineSplitter();
             System.out.println("So do you think I wrote the identification marks of one of the " +
-                    "\nPokemon in the Pokedex incorrectly? And which one?");
+                    "\nPokemon in the pokedex incorrectly? And which one?");
 
             System.out.println("0. Back");
             for (int i = 0; i < pokemons.size(); i++) {
@@ -99,7 +111,8 @@ public class PokemonController {
     public void deletePokemon() {
         while (true) {
             OutputUtil.lineSplitter();
-            System.out.println("You can only kill freely moving Pokémon,\nand only if there is no other option");
+            System.out.println("You can only kill free-roaming pokemon," +
+                    "\nand only if there is no other option");
             System.out.println("Do you want to continue?");
             System.out.println("0. Back");
             System.out.println("1. Yes");
@@ -123,6 +136,12 @@ public class PokemonController {
                 .stream()
                 .filter(pokemon -> pokemon.getTrainerId() == 0)
                 .toList();
+        if (pokemons.isEmpty()) {
+            System.out.println("Sorry, there are currently no free-roaming pokemon\n" +
+                    "It looks like everyone is dead.");
+            return;
+        }
+
         while (true) {
             OutputUtil.lineSplitter();
             System.out.println("These are all freely moving Pokemons");
