@@ -1,4 +1,4 @@
-package com.github.matcaban.pokemonmanager.Controller;
+package com.github.matcaban.pokemonmanager.controller;
 
 import com.github.matcaban.pokemonmanager.utility.InputUtils;
 import com.github.matcaban.pokemonmanager.utility.OutputUtil;

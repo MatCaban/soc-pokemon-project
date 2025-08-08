@@ -1,11 +1,11 @@
 package com.github.matcaban.pokemonmanager;
 
-import com.github.matcaban.pokemonmanager.Controller.PokemonManager;
+import com.github.matcaban.pokemonmanager.controller.PokemonManager;
 
 import java.sql.SQLException;
 
 public class Main {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
 
         new PokemonManager().printOptions();
     }

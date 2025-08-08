@@ -1,4 +1,4 @@
-package com.github.matcaban.pokemonmanager.Controller;
+package com.github.matcaban.pokemonmanager.controller;
 
 import com.github.matcaban.pokemonmanager.domain.Pokemon;
 import com.github.matcaban.pokemonmanager.domain.Trainer;
